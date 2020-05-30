@@ -16,5 +16,17 @@ public class Main {
         System.out.println(linkedList.getSize());
 
         System.out.println(linkedList.isEmpty());
+
+        System.out.println(linkedList.remove(2));
+
+        System.out.println(linkedList);
+
+        System.out.println(linkedList.removeFitst());
+
+        System.out.println(linkedList);
+
+        System.out.println(linkedList.removeLast());
+
+        System.out.println(linkedList);
     }
 }
