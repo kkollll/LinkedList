@@ -1,32 +1,35 @@
+import java.util.Random;
+
 public class Main {
 
-    public static void main(String[] args) {
-        LinkedList<Integer> linkedList = new LinkedList<>();
+    private static double testStack(Stack<Integer> q, int opCount) {
 
-        for (int i = 5; i > 0; i--) {
-            linkedList.addFirst(i);
-            System.out.println(linkedList);
+        long startTime = System.nanoTime();
+
+        Random random = new Random();
+
+        for (int i = 0; i < opCount; i++) {
+            q.push(random.nextInt(Integer.MAX_VALUE));
+        }
+        for (int i = 0; i < opCount; i++) {
+            q.pop();
         }
 
-        linkedList.add(2, 555);
-        System.out.println(linkedList);
+        long endTime = System.nanoTime();
 
-        System.out.println(linkedList.get(5));
+        return (endTime - startTime) / 1000000000.0;
+    }
 
-        System.out.println(linkedList.getSize());
+    public static void main(String[] args) {
 
-        System.out.println(linkedList.isEmpty());
+        int opCount = 1000000;
 
-        System.out.println(linkedList.remove(2));
+        ArrayStack<Integer> arrayQueue = new ArrayStack<>();
+        double time1 = testStack(arrayQueue, opCount);
+        System.out.println("time1: " + time1);
 
-        System.out.println(linkedList);
-
-        System.out.println(linkedList.removeFitst());
-
-        System.out.println(linkedList);
-
-        System.out.println(linkedList.removeLast());
-
-        System.out.println(linkedList);
+        LinkedListStack<Integer> loopQueue = new LinkedListStack<>();
+        double time2 = testStack(loopQueue, opCount);
+        System.out.println("time2: " + time2);
     }
 }
