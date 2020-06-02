@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 public class LinkedList<E> {
 
     private class Node {
@@ -23,12 +25,12 @@ public class LinkedList<E> {
         }
     }
 
-    // 虚拟头节点
-    private Node dummyHead;
+    // 头节点
+    private Node head;
     private int size;
 
     public LinkedList() {
-        dummyHead = new Node();
+        head = null;
         size = 0;
     }
 
@@ -54,21 +56,18 @@ public class LinkedList<E> {
             throw new IllegalArgumentException("Add failed. Illegal index.");
         }
 
-
-        Node prev = dummyHead;
-        for (int i = 0; i < index; i++) {
-            prev = prev.next;
-        }
-//            Node node = new Node(e);
-//            node.next = prev.next;
-//            prev.next = node;
-
-        prev.next = new Node(e, prev.next);
+        head = add(head, index, e);
         size++;
 
 
+    }
 
-
+    private Node add(Node node, int index, E e) {
+        if (index == 0) {
+            return new Node(e, node);
+        }
+        node.next = add(node.next, index - 1, e);
+        return node;
     }
 
     /**
@@ -93,6 +92,7 @@ public class LinkedList<E> {
     /**
      * 获取链表的第index(0-based)个位置的元素
      * 在链表中不是一个常用的操作，练习用:)
+     *
      * @param index 索引
      * @return
      */
@@ -102,11 +102,14 @@ public class LinkedList<E> {
             throw new IllegalArgumentException("Get failed. Illegal index.");
         }
 
-        Node cur = dummyHead.next;
-        for (int i = 0; i < index; i++) {
-            cur = cur.next;
+        return get(head, index);
+    }
+
+    private E get(Node node, int index) {
+        if (index == 0) {
+            return node.e;
         }
-        return cur.e;
+        return get(node.next, index - 1);
     }
 
     public E getFirst() {
@@ -120,6 +123,7 @@ public class LinkedList<E> {
     /**
      * 修改链表的第index(0-based)个位置的元素
      * 在链表中不是一个常用的操作，练习用:)
+     *
      * @param index
      * @param e
      */
@@ -128,33 +132,43 @@ public class LinkedList<E> {
             throw new IllegalArgumentException("Set failed. Illegal index.");
         }
 
-        Node cur = dummyHead.next;
-        for (int i = 0; i < index; i++) {
-            cur = cur.next;
+        set(head, index, e);
+    }
+
+    private void set(Node node, int index, E e) {
+
+        if (index == 0) {
+            node.e = e;
+            return;
         }
-        cur.e = e;
+        set(node.next, index - 1, e);
     }
 
     /**
      * 查找链表中是否有元素e
+     *
      * @param e
      * @return
      */
     public boolean contains(E e) {
 
-        Node cur = dummyHead.next;
-        while (cur != null) {
-            if (cur.e.equals(e)) {
-                return true;
-            }
-            cur = cur.next;
-        }
-        return false;
+        return contains(head, e);
 
+    }
+
+    private boolean contains(Node node, E e) {
+        if (node == null) {
+            return false;
+        }
+        if (node.e.equals(e)) {
+            return true;
+        }
+        return contains(node.next, e);
     }
 
     /**
      * 删除索引元素
+     *
      * @param index
      * @return
      */
@@ -164,17 +178,19 @@ public class LinkedList<E> {
             throw new IllegalArgumentException("Remove failed. Illegal index.");
         }
 
-        Node prev = dummyHead;
-
-        for (int i = 0; i < index; i++) {
-            prev = prev.next;
-        }
-        Node delNode =  prev.next;
-        prev.next = delNode.next;
-        delNode.next = null;
+        Pair<Node, E> res = remove(head, index);
         size--;
+        head = res.getKey();
+        return res.getValue();
+    }
 
-        return delNode.e;
+    private Pair<Node,E> remove(Node node, int index) {
+        if (index == 0) {
+            return new Pair<>(node.next, node.e);
+        }
+        Pair<Node, E> res = remove(node.next, index - 1);
+        node.next = res.getKey();
+        return new Pair<>(node, res.getValue());
     }
 
     public E removeFitst() {
@@ -196,11 +212,24 @@ public class LinkedList<E> {
 //            cur = cur.next;
 //        }
 
-        for (Node cur = dummyHead.next; cur != null; cur = cur.next) {
+        for (Node cur = head; cur != null; cur = cur.next) {
             res.append(cur + "->");
         }
         res.append("NULL");
         return res.toString();
     }
+
+    public static void main(String[] args) {
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        int index = 5;
+        while (index > 0) {
+            linkedList.addFirst(index);
+            index--;
+        }
+        System.out.println(linkedList);
+        System.out.println(linkedList.remove(3));
+        System.out.println(linkedList.get(3));
+    }
+
 
 }
