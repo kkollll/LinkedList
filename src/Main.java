@@ -22,18 +22,28 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int opCount = 1000000;
+//        int opCount = 1000000;
+//
+//        ArrayQueue<Integer> arrayQueue = new ArrayQueue<>();
+//        double time1 = testQueue(arrayQueue, opCount);
+//        System.out.println("time1: " + time1);
+//
+//        LoopQueue<Integer> loopQueue = new LoopQueue<>();
+//        double time2 = testQueue(loopQueue, opCount);
+//        System.out.println("time2: " + time2);
+//
+//        LinkedListQueue<Integer> linkedListQueue = new LinkedListQueue<>();
+//        double time3 = testQueue(linkedListQueue, opCount);
+//        System.out.println("time3: " + time3);
 
-        ArrayQueue<Integer> arrayQueue = new ArrayQueue<>();
-        double time1 = testQueue(arrayQueue, opCount);
-        System.out.println("time1: " + time1);
-
-        LoopQueue<Integer> loopQueue = new LoopQueue<>();
-        double time2 = testQueue(loopQueue, opCount);
-        System.out.println("time2: " + time2);
-
-        LinkedListQueue<Integer> linkedListQueue = new LinkedListQueue<>();
-        double time3 = testQueue(linkedListQueue, opCount);
-        System.out.println("time3: " + time3);
+        DoubleEndsLinkedList<Integer> list = new DoubleEndsLinkedList<>();
+        for (int i = 0; i < 5; i++) {
+            list.add(i,i);
+        }
+        System.out.println(list);
+        System.out.println(list.size);
+        list.add(3, 8);
+        System.out.println(list);
+        System.out.println(list.size);
     }
 }
